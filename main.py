@@ -6,13 +6,15 @@ import logging
 import discord
 from discord.ext import commands
 from typing import Optional, List, Dict, Set
+import dotenv
+from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO)
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv()
 
 # ---------------- CONFIG (fill these) ----------------
-TOKEN = "MTQ5NDg2NTE5MTQ0MjE4NjQyMA.Gs77Uk.f5VjE5YXKQmtYHnsYaPTFrFnoqQjfylSVhV-qY"
 GUILD_ID = 1431034521188307067  # your guild id as int
 
 MATCH_TIMES_CHANNEL_ID = 1431484598038040717
@@ -25,7 +27,11 @@ DEFAULT_REF_PING = ""
 DEFAULT_CASTER_PING = ""
 
 FREE_AGENT_ROLE_NAME = "Free Agent"
-TEAMS_FILE = "teams.json"
+
+
+data_file = os.getenv("data_file", "/data")
+os.makedirs(data_file, exist_ok=True)
+TEAMS_FILE = os.path.join(data_file, "teams.json")
 
 intents = discord.Intents.default()
 intents.members = True
@@ -1850,4 +1856,4 @@ async def print_guild_commands():
         logging.exception("Failed to fetch guild commands")
 
 if __name__ == "__main__":
-    bot.run(TOKEN)
+    bot.run(os.getenv("TOKEN"))
